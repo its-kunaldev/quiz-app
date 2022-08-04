@@ -1,0 +1,29 @@
+.rules-box {
+    padding: 1rem 4rem;
+}
+
+.start-btn {
+    background-color: cyan;
+    border: 1px solid black;
+}
+
+.rules-box {
+    /* width: 40rem;
+    height: 20rem; */
+    background-color: black;
+}
+
+.rules-box h2 {
+    text-align: center;
+}
+
+hr {
+    margin: 1rem 0;
+}
+
+.ol li {
+    margin: 1rem 0;
+    font-size: 18px;
+    letter-spacing: 1px;
+
+}
