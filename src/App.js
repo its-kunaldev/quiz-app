@@ -1,20 +1,23 @@
-import { useState } from 'react';
+import React, { useContext} from 'react';
 import './App.css';
 
 import QuizForm from './components/form/QuizForm';
 import Rules from './components/rules/Rules';
+import IsClickedContext from './context/use-context';
 
 function App() {
 
-  const [isClicked, setIsClicked] = useState(false);
+  const ctx = useContext(IsClickedContext);
 
-  // fetch(`https://opentdb.com/api.php?amount=10&category=18`)
+  // fetch(`https://opentdb.com/api_category.php`)
+  // // fetch(`https://opentdb.com/api_count_global.php`)
+  // // fetch(`https://opentdb.com/api.php?amount=10&category=30&difficulty=medium`)
   // .then( (response) => {
-  //   console.log(response);
+  //   // console.log(response);
   //   return response.json()
   // })
   // .then((data) => {
-  //   console.log(data);
+  //   // console.log(data);
   // })
   // .catch(err => {
   //   console.log(err);
@@ -33,13 +36,13 @@ function App() {
   // })
 
   return (
-    <>
-    {!isClicked && <div className="startup">
-      <Rules />
-    </div>}
-    {isClicked && <div className="App">
-      <QuizForm />
-    </div>}
+   <>
+      {!ctx.changeContent && <div className="startup">
+        <Rules />
+      </div>}
+      {ctx.changeContent && <div className="App">
+        <QuizForm />
+      </div>}
     </>
   );
 }

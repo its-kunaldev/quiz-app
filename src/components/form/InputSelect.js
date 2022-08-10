@@ -4,7 +4,7 @@ import './InputSelect.css';
 
 const InputSelect = props => {
 
-    const options = props.options.map(opt => <option key={opt} value={opt}>{opt}</option> );
+    const options = props.options.map(opt => <option key={opt.id} id={opt.id} value={opt.name}>{opt.name}</option> );
 
     return (
         <div className={`${props.className} select-area`}>
