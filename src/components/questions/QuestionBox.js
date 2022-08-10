@@ -26,10 +26,9 @@ const QuestionBox = (props) => {
     // console.log(isLoading);
 
 
-    let timer;
     useEffect(() => {
         // let i = 2;
-        timer = setInterval(() => {
+        const timer = setInterval(() => {
             
             if(show && !isLoading){
                 setCounter(prevState => {
@@ -58,9 +57,10 @@ const QuestionBox = (props) => {
     // render options
     let options;
     if (!isLoading) {
-        options = allQuestions[ counter].incorrect_answers;
+        options = allQuestions[counter].incorrect_answers;
         if(show){
-            options.splice(Math.floor(Math.random() * allQuestions[counter].incorrect_answers.length), 0, allQuestions[counter].correct_answer);
+            let randomNumber = Math.floor(Math.random() * (options.length + 1));
+            options.splice(randomNumber, 0, allQuestions[counter].correct_answer);
         }
         // console.log(options);
     }
@@ -79,19 +79,20 @@ const QuestionBox = (props) => {
     //     return () => clearInterval(timer2);
     // }, [counter]);
     
-    let statusClass;
     useEffect( () => {
         if(!isLoading) {
             let allOptions = document.querySelectorAll('.options');
-            // console.log(allOptions);
         
             allOptions.forEach( opt => {
-                console.log(opt)
                 opt.addEventListener('click', () => {
 
-                    statusClass = opt.innerText === allQuestions[counter].correct_answer ? 'correct' : 'wrong'; 
+                    let statusClass = opt.innerText === allQuestions[counter].correct_answer ? 'correct' : 'wrong'; 
                     opt.classList.add(statusClass);
-                    opt.classList.remove('options');
+                    opt.classList.remove('hoverEffect');
+
+                    // const returnValue = marker();
+                    // allOptions[returnValue].classList.add('correct');
+                    // allOptions[returnValue].classList.remove('hoverEffect');
         
                     // if(opt.innerText === allQuestions[counter].correct_answer) {
                     //     console.log(opt.innerText);
@@ -111,6 +112,12 @@ const QuestionBox = (props) => {
                     
                 });
             });
+
+            // const marker = () => {
+            //     allOptions.map((op) => {
+            //         return op;
+            //     })
+            // }
         }
         // console.log('1st');
     });
@@ -119,6 +126,14 @@ const QuestionBox = (props) => {
         setShow(true);
         setCounter(counter + 1);
 
+        let allOptions = document.querySelectorAll('.options');
+        allOptions.forEach( opt => {
+            if(opt.classList.contains('correct') || opt.classList.contains('wrong')){
+                opt.classList.remove('correct');
+                opt.classList.remove('wrong');
+            }
+            opt.classList.add('hoverEffect');
+        })
     }
 
 
@@ -141,7 +156,7 @@ const QuestionBox = (props) => {
                         return <p>{ques}</p>
                     })} */}
                     {options.map(opt => {
-                        return <button className='options'>{opt}</button>
+                        return <button className='options hoverEffect'>{opt}</button>
                     })}
                 </div>
                 <hr />

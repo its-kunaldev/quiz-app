@@ -90,7 +90,7 @@
 }
 
 
-.questions .options:hover {
+.questions .hoverEffect:hover {
     background: rgba(68, 184, 247, 0.41);
 }
 
