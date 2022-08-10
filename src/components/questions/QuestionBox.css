@@ -5,6 +5,7 @@
     color: black;
     padding: 10px 0;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .status {
@@ -48,11 +49,25 @@
 
 .loading-timer span {
     position: absolute;
-    left: 0;
+    left: -100%;
     top: 0;
     height: 100%;
-    width: 20rem;
+    width: 100%;
     background-color: rgb(0, 140, 255);
+    animation: loading 5s linear infinite;
+}
+
+@keyframes loading{
+    0%{
+        left: -100%;
+    }
+
+    /* 50%{
+        left: 0;
+    } */
+    100%{
+        left: 0;
+    }
 }
 
 .questions {
@@ -85,7 +100,7 @@
     border-color: rgba(255, 0, 0, 0.17);
 }
 .questions .correct {
-    background-color: rgba(30, 145, 80, 0.27);
+    background-color: rgba(92, 219, 147, 0.505);
     border-color: rgba(30, 145, 80, 0.27);
 }
 

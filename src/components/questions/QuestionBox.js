@@ -27,25 +27,15 @@ const QuestionBox = (props) => {
 
 
     useEffect(() => {
-        // let i = 2;
         const timer = setInterval(() => {
             
             if(show && !isLoading){
                 setCounter(prevState => {
-                    // i = i + 1;
                     return prevState + 1;
                 });
             }
-            
-            // if (counter + 2 === +props.value.inputAmount) {
-                //     clearInterval(timer);
-                // }
-                // if(!show){
-                    //     clearInterval(timer);
-                    // }
                     
         }, 5000);
-        // console.log(counter);
         if (counter + 1 === +props.value.inputAmount) {
             clearInterval(timer);
         }
@@ -65,6 +55,7 @@ const QuestionBox = (props) => {
         // console.log(options);
     }
 
+
     // useEffect(() => {
     //     const timer2 = setInterval(() => {
     //         setCounter2(prevState => {
@@ -78,9 +69,11 @@ const QuestionBox = (props) => {
 
     //     return () => clearInterval(timer2);
     // }, [counter]);
+
     
     useEffect( () => {
         if(!isLoading) {
+            let loader = document.querySelector('.loader');
             let allOptions = document.querySelectorAll('.options');
         
             allOptions.forEach( opt => {
@@ -90,41 +83,29 @@ const QuestionBox = (props) => {
                     opt.classList.add(statusClass);
                     opt.classList.remove('hoverEffect');
 
-                    // const returnValue = marker();
-                    // allOptions[returnValue].classList.add('correct');
-                    // allOptions[returnValue].classList.remove('hoverEffect');
-        
-                    // if(opt.innerText === allQuestions[counter].correct_answer) {
-                    //     console.log(opt.innerText);
-                    //     opt.classList.add('correct');
-                    //     opt.classList.remove('options');
-                    // }
-                    // else {
-                    //     // console.log(opt.innerText);
-                    //     opt.classList.add('wrong');
-                    //     opt.classList.remove('options');
-                    // }
+                    allOptions.forEach( op => {
+                        if(op.innerText === allQuestions[counter].correct_answer){
+                            op.classList.add('correct');
+                            op.classList.remove('hoverEffect');
+                        }
+                    });
+                    if(loader){
+                        // loader.style.animationPlayState = 'none';
+                        loader.style.animation = 'none';
+                    }
 
                     setShow(false);
-
-                    // opt.style.backgroundColor = 'rgba(30, 145, 80, 0.27)';
-                    // opt.style.borderColor = 'rgba(30, 145, 80, 0.27)';
-                    
                 });
             });
-
-            // const marker = () => {
-            //     allOptions.map((op) => {
-            //         return op;
-            //     })
-            // }
         }
-        // console.log('1st');
     });
 
     const buttonHandler = () => {
         setShow(true);
         setCounter(counter + 1);
+        // document.querySelector('.loader').style.animation = 'none';
+        // document.querySelector('.loader').offsetHeight;
+        document.querySelector('.loader').style.animation = 'loading 5s linear infinite';
 
         let allOptions = document.querySelectorAll('.options');
         allOptions.forEach( opt => {
@@ -143,12 +124,12 @@ const QuestionBox = (props) => {
                 <div className="status">
                     <h2>Quizer</h2>
                     <div className="timer">
-                        <h4>Time Left</h4>
-                        <span>{0}</span>
+                        <h4>Time</h4>
+                        <span>15</span>
                     </div>
                 </div>
                 <div className="loading-timer">
-                    <span></span>
+                    <span className='loader'></span>
                 </div>
                 <div className="questions">
                     <h2><span>{counter + 1}.</span>{allQuestions[counter].question}</h2>
@@ -162,7 +143,7 @@ const QuestionBox = (props) => {
                 <hr />
                 <div className="counter">
                     <p><span>{counter + 1}</span> of <span className='total-ques'>{props.value.inputAmount}</span> Questions</p>
-                    {!show && <button onClick={buttonHandler}>Next Ques</button>}
+                    {!show && counter+1 < +props.value.inputAmount && <button onClick={buttonHandler}>Next Ques</button>}
                 </div>
             </div>}
             {isLoading && <div>LOADINg.....</div>}
