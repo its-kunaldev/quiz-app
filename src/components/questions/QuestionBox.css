@@ -6,6 +6,7 @@
     padding: 10px 0;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
 }
 
 .status {
@@ -54,7 +55,11 @@
     height: 100%;
     width: 100%;
     background-color: rgb(0, 140, 255);
-    animation: loading 5s linear infinite;
+    animation: loading 15s linear infinite;
+}
+
+.loading {
+    width: 20rem;
 }
 
 @keyframes loading{
@@ -135,6 +140,41 @@
 
 .counter .total-ques {
     font-weight: 800;
+}
+
+.reactions {
+    width: 7rem;
+    height: 7rem;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hidden {
+    display: none;
+}
+
+.emojis {
+    width: 100%;
+    animation: reaction 0.6s linear;
+}
+
+@keyframes reaction {
+    0%{
+        /* transform: scale(0); */
+        width: 0;
+    }
+
+    50%{
+        /* transform: scale(0.5); */
+        width: 50%;
+    }
+
+    100%{
+        /* transform: scale(1); */
+        width: 100%;
+    }
 }
 
 

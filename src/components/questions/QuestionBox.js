@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import IsClickedContext from '../../context/use-context';
 import useFetch from '../hooks/useFetch';
+import Result from '../result/Result';
 
 import './QuestionBox.css';
+
 
 const QuestionBox = (props) => {
 
     const [allQuestions, setAllQuestions] = useState([]);
     const [counter, setCounter] = useState(0);
-    // const [counter2, setCounter2] = useState(0);
+    const [correctCounter, setCorrectCounter] = useState(0);
     const [show, setShow] = useState(true);
+    const [statusBar, setStatusBar] = useState('');
+    const ctx = useContext(IsClickedContext);
 
-    const { isLoading, getData } = useFetch();
+    const { isLoading, getData, isError } = useFetch();
 
 
 
@@ -22,75 +27,98 @@ const QuestionBox = (props) => {
 
         getData(props.value.inputCategory, props.value.inputAmount, props.value.inputDifficulty, getQuestions);
     }, [getData]);
-    console.log(allQuestions);
+    // console.log(allQuestions);
     // console.log(isLoading);
 
 
     useEffect(() => {
         const timer = setInterval(() => {
-            
-            if(show && !isLoading){
+
+            if (show && !isLoading) {
                 setCounter(prevState => {
                     return prevState + 1;
                 });
             }
-                    
-        }, 5000);
+
+        }, 15000);
         if (counter + 1 === +props.value.inputAmount) {
             clearInterval(timer);
         }
 
         return () => clearInterval(timer);
     }, [show, isLoading, counter]);
-    
-    
+
+
     // render options
     let options;
     if (!isLoading) {
         options = allQuestions[counter].incorrect_answers;
-        if(show){
+        if (show) {
             let randomNumber = Math.floor(Math.random() * (options.length + 1));
             options.splice(randomNumber, 0, allQuestions[counter].correct_answer);
         }
-        // console.log(options);
     }
 
 
-    // useEffect(() => {
-    //     const timer2 = setInterval(() => {
-    //         setCounter2(prevState => {
-    //             return prevState + 1;
-    //         });
-    //         console.log(counter2);
-    //         if (counter2 == 4) {
-    //             clearInterval(timer2);
-    //         }
-    //     }, 1000);
-
-    //     return () => clearInterval(timer2);
-    // }, [counter]);
-
-    
-    useEffect( () => {
-        if(!isLoading) {
+    useEffect(() => {
+        if (!isLoading) {
             let loader = document.querySelector('.loader');
             let allOptions = document.querySelectorAll('.options');
-        
-            allOptions.forEach( opt => {
+            function marker() {
+                allOptions.forEach(op => {
+                    if (op.innerText === allQuestions[counter].correct_answer && !op.classList.contains('correct') && !op.classList.contains('wrong')) {
+                        op.classList.add('correct');
+                        op.classList.remove('hoverEffect');
+                    }
+                });
+            }
+
+            allOptions.forEach(opt => {
                 opt.addEventListener('click', () => {
 
-                    let statusClass = opt.innerText === allQuestions[counter].correct_answer ? 'correct' : 'wrong'; 
-                    opt.classList.add(statusClass);
+                    // let statusClass = opt.innerText === allQuestions[counter].correct_answer ? 'correct' : 'wrong'; 
+                    // opt.classList.add(statusClass);
                     opt.classList.remove('hoverEffect');
 
-                    allOptions.forEach( op => {
-                        if(op.innerText === allQuestions[counter].correct_answer){
-                            op.classList.add('correct');
-                            op.classList.remove('hoverEffect');
-                        }
-                    });
-                    if(loader){
-                        // loader.style.animationPlayState = 'none';
+                    if (opt.innerText === allQuestions[counter].correct_answer) {
+                        opt.classList.add('correct');
+                        opt.classList.remove('wrong');
+                        setCorrectCounter(prevState => {
+                            return prevState + 1;
+                        });
+
+                        // if (!document.querySelector('.reactions').innerHTML && barrier === 0) {
+                        //     const img = document.createElement('img');
+                        //     img.src = require('../../assests/win.gif');
+                        //     img.classList.add('emojis')
+                        //     document.querySelector('.reactions').appendChild(img);
+                        //     barrier = 1;
+                        // }
+                        // if(!document.querySelector('.emojis').classList.contains('winner')){
+                        //     document.querySelector('.winner').classList.remove('hidden');
+                        // }
+                    }
+
+                    else {
+                        opt.classList.add('wrong');
+                        opt.classList.remove('correct');
+                        marker();
+                    }
+
+                    setStatusBar(opt.innerText === allQuestions[counter].correct_answer ? 'win' : 'lose');
+                        
+                    // allOptions.forEach(op => {
+                    //     if (op.innerText === allQuestions[counter].correct_answer && !op.classList.contains('wrong')) {
+                    //         console.log(op)
+                    //         console.log(allQuestions[counter].correct_answer);
+                    //         op.classList.add('correct');
+                    //         op.classList.remove('hoverEffect');
+                    //     }
+                    // });
+
+
+                    if (loader) {
+                        // loader.style.animationPlayState = 'paused';
                         loader.style.animation = 'none';
                     }
 
@@ -100,27 +128,35 @@ const QuestionBox = (props) => {
         }
     });
 
-    const buttonHandler = () => {
-        setShow(true);
-        setCounter(counter + 1);
-        // document.querySelector('.loader').style.animation = 'none';
-        // document.querySelector('.loader').offsetHeight;
-        document.querySelector('.loader').style.animation = 'loading 5s linear infinite';
 
-        let allOptions = document.querySelectorAll('.options');
-        allOptions.forEach( opt => {
-            if(opt.classList.contains('correct') || opt.classList.contains('wrong')){
-                opt.classList.remove('correct');
-                opt.classList.remove('wrong');
-            }
-            opt.classList.add('hoverEffect');
-        })
+    const buttonHandler = (e) => {
+
+        if (e.target.innerText === 'Result') {
+            ctx.onClick(e.target.innerText);
+        }
+        else {
+            document.querySelector('.loader').style.animation = 'loading 15s linear infinite';
+
+            let allOptions = document.querySelectorAll('.options');
+            allOptions.forEach(opt => {
+                if (opt.classList.contains('correct') || opt.classList.contains('wrong')) {
+                    opt.classList.remove('correct');
+                    opt.classList.remove('wrong');
+                }
+                opt.classList.add('hoverEffect');
+            })
+            setShow(true);
+            setCounter(counter + 1);
+        }
+        setStatusBar('');
     }
 
 
     return (
         <>
-            {!isLoading && <div className='ques-box'>
+            {isLoading && !ctx.showResult && <div><img className='loading' src={require('../../assests/loader.gif')} alt="loading..." /></div>}
+            {isError && <div className="error">Something Went Wrong(404) <br /> Refresh the page!</div> }
+            {!isLoading && !ctx.showResult && !isError && <div className='ques-box'>
                 <div className="status">
                     <h2>Quizer</h2>
                     <div className="timer">
@@ -143,10 +179,14 @@ const QuestionBox = (props) => {
                 <hr />
                 <div className="counter">
                     <p><span>{counter + 1}</span> of <span className='total-ques'>{props.value.inputAmount}</span> Questions</p>
-                    {!show && counter+1 < +props.value.inputAmount && <button onClick={buttonHandler}>Next Ques</button>}
+                    {!show && <button onClick={buttonHandler}>{counter + 1 < +props.value.inputAmount ? 'Next Ques' : 'Result'}</button>}
                 </div>
             </div>}
-            {isLoading && <div>LOADINg.....</div>}
+            {ctx.showResult && <Result correctCounter={correctCounter} totalQuestions={props.value.inputAmount}></Result>}
+            <div className="reactions">
+                {statusBar && <img className='emojis' src={require(`../../assests/${statusBar}.gif`)} alt="win" />}
+                {/* <img className='emojis looser hidden' src={require('../../assests/lose.gif')} alt="lose" /> */}
+            </div>
         </>
     )
 };

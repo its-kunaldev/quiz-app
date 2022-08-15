@@ -11,7 +11,6 @@ import useFetch from '../hooks/useFetch';
 
 const QuizForm = props => {
 
-    const categories = [];
     const difficulties = [
         {
             id: 1,
@@ -33,7 +32,7 @@ const QuizForm = props => {
     const ctx = useContext(IsClickedContext);
 
     
-    const { getData  } = useFetch();
+    const {isLoading, getData} = useFetch();
     
     useEffect( () => {
         const tranformData = (data) => {
@@ -41,12 +40,11 @@ const QuizForm = props => {
         }
         getData('', '', '', tranformData);
     }, []);
-    console.log(allCategories);
+    // console.log(allCategories);
     
 
     const submitForm = (e) => {
         e.preventDefault();
-        console.log(e.target[1].selectedOptions[0].id);
 
         setInputValue({
             inputName: e.target[0].value,
@@ -65,7 +63,8 @@ const QuizForm = props => {
 
     return(
         <>
-        {!ctx.isFormSubmit && <form action="/" onSubmit={submitForm} className={styles.quizForm}>
+         {isLoading && <div><img className='loading' src={require('../../assests/loader.gif')} alt="loading..." /></div>}
+        {!ctx.isFormSubmit && !isLoading && <form action="/" onSubmit={submitForm} className={styles.quizForm}>
             <InputText
                 className={styles["input-area"]}
                 name={'Your Name'} type={'text'}
