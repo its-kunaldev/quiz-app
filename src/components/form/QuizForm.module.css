@@ -1,4 +1,5 @@
 .quizForm {
+    max-width: 95%;
     width: 35%;
     margin: 0 auto;
 }
@@ -36,5 +37,11 @@
 @media screen and (max-width: 500px) {
     .quizForm {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .quizForm {
+        width: 18rem;
     }
 }
