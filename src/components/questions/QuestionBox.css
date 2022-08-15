@@ -36,6 +36,15 @@
     color: blue;
 }
 
+.error {
+    font-size: 20px;
+    text-align: center;
+}
+
+.error h2 {
+    margin-bottom: 10px;
+}
+
 .timer {
     display: flex;
     justify-content: space-between;

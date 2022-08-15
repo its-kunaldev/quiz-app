@@ -32,7 +32,7 @@ const QuizForm = props => {
     const ctx = useContext(IsClickedContext);
 
     
-    const {isLoading, getData} = useFetch();
+    const {isLoading, getData, isError} = useFetch();
     
     useEffect( () => {
         const tranformData = (data) => {
@@ -64,7 +64,11 @@ const QuizForm = props => {
     return(
         <>
          {isLoading && <div><img className='loading' src={require('../../assests/loader.gif')} alt="loading..." /></div>}
-        {!ctx.isFormSubmit && !isLoading && <form action="/" onSubmit={submitForm} className={styles.quizForm}>
+         {!ctx.isFormSubmit && !isLoading && isError && <div className="error">
+                <h2>Something Went Wrong(404)</h2>
+                <p>Refresh the page 🔃</p>
+        </div> }
+        {!ctx.isFormSubmit && !isLoading && !isError && <form action="/" onSubmit={submitForm} className={styles.quizForm}>
             <InputText
                 className={styles["input-area"]}
                 name={'Your Name'} type={'text'}

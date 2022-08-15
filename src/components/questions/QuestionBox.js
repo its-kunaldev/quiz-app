@@ -34,7 +34,7 @@ const QuestionBox = (props) => {
     useEffect(() => {
         const timer = setInterval(() => {
 
-            if (show && !isLoading) {
+            if (show && !isLoading && !isError) {
                 setCounter(prevState => {
                     return prevState + 1;
                 });
@@ -46,12 +46,12 @@ const QuestionBox = (props) => {
         }
 
         return () => clearInterval(timer);
-    }, [show, isLoading, counter]);
+    }, [show, isLoading, counter, isError]);
 
 
     // render options
     let options;
-    if (!isLoading) {
+    if (!isLoading && !isError) {
         options = allQuestions[counter].incorrect_answers;
         if (show) {
             let randomNumber = Math.floor(Math.random() * (options.length + 1));
@@ -61,7 +61,7 @@ const QuestionBox = (props) => {
 
 
     useEffect(() => {
-        if (!isLoading) {
+        if (!isLoading && !isError) {
             let loader = document.querySelector('.loader');
             let allOptions = document.querySelectorAll('.options');
             function marker() {
@@ -155,7 +155,10 @@ const QuestionBox = (props) => {
     return (
         <>
             {isLoading && !ctx.showResult && <div><img className='loading' src={require('../../assests/loader.gif')} alt="loading..." /></div>}
-            {isError && <div className="error">Something Went Wrong(404) <br /> Refresh the page!</div> }
+            {isError && <div className="error">
+                <h2>Something Went Wrong(404)</h2>
+                <p>Refresh the page 🔃</p>
+            </div> }
             {!isLoading && !ctx.showResult && !isError && <div className="welcome-message"><h1>Hello {props.value.inputName}, Welcome to Quizer</h1></div>}
             {!isLoading && !ctx.showResult && !isError && <div className='ques-box'>
                 <div className="status">
