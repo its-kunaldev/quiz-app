@@ -156,9 +156,10 @@ const QuestionBox = (props) => {
         <>
             {isLoading && !ctx.showResult && <div><img className='loading' src={require('../../assests/loader.gif')} alt="loading..." /></div>}
             {isError && <div className="error">Something Went Wrong(404) <br /> Refresh the page!</div> }
+            {!isLoading && !ctx.showResult && !isError && <div className="welcome-message"><h1>Hello {props.value.inputName}, Welcome to Quizer</h1></div>}
             {!isLoading && !ctx.showResult && !isError && <div className='ques-box'>
                 <div className="status">
-                    <h2>Quizer</h2>
+                    <h2>Qui<span>zer</span></h2>
                     <div className="timer">
                         <h4>Time</h4>
                         <span>15</span>
@@ -173,7 +174,7 @@ const QuestionBox = (props) => {
                         return <p>{ques}</p>
                     })} */}
                     {options.map(opt => {
-                        return <button className='options hoverEffect'>{opt}</button>
+                        return <button key={opt} className='options hoverEffect'>{opt}</button>
                     })}
                 </div>
                 <hr />

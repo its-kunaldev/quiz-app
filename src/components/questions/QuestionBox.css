@@ -9,11 +9,31 @@
     position: relative;
 }
 
+.welcome-message {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    color: cyan;
+    /* font-size: 1.3rem; */
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    padding: 5px;
+}
+
 .status {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 3%;
+}
+
+.status h2 {
+    font-weight: 900;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-style: italic;
+}
+
+.status h2 span {
+    color: blue;
 }
 
 .timer {
@@ -181,6 +201,10 @@
 @media screen and (max-width: 500px) {
     .ques-box {
         width: 100%;
+    }
+
+    .welcome-message {
+        font-size: 13px;
     }
 }
 
