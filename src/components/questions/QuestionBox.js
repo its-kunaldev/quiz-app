@@ -165,7 +165,7 @@ const QuestionBox = (props) => {
                     <h2>Qui<span>zer</span></h2>
                     <div className="timer">
                         <h4>Time</h4>
-                        <span>15</span>
+                        <span>15s</span>
                     </div>
                 </div>
                 <div className="loading-timer">
