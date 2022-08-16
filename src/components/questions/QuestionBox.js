@@ -1,3 +1,4 @@
+import { decode } from 'html-entities';
 import React, { useContext, useEffect, useState } from 'react'
 import IsClickedContext from '../../context/use-context';
 import useFetch from '../hooks/useFetch';
@@ -172,12 +173,9 @@ const QuestionBox = (props) => {
                     <span className='loader'></span>
                 </div>
                 <div className="questions">
-                    <h2><span>{counter + 1}.</span>{allQuestions[counter].question}</h2>
-                    {/* {allQuestions[counter].incorrect_answers.map(ques => {
-                        return <p>{ques}</p>
-                    })} */}
+                    <h2><span>{counter + 1}.</span>{decode(allQuestions[counter].question)}</h2>
                     {options.map(opt => {
-                        return <button key={opt} className='options hoverEffect'>{opt}</button>
+                        return <button key={opt} className='options hoverEffect'>{decode(opt)}</button>
                     })}
                 </div>
                 <hr />
@@ -189,7 +187,6 @@ const QuestionBox = (props) => {
             {ctx.showResult && <Result correctCounter={correctCounter} totalQuestions={props.value.inputAmount}></Result>}
             <div className="reactions">
                 {statusBar && <img className='emojis' src={require(`../../assests/${statusBar}.gif`)} alt="win" />}
-                {/* <img className='emojis looser hidden' src={require('../../assests/lose.gif')} alt="lose" /> */}
             </div>
         </>
     )
